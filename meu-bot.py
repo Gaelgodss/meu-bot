@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord.ui import Button, View
 
+TOKEN = os.getenv("DISCORD_TOKEN")
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
 intents.members = True
@@ -874,4 +875,4 @@ async def vip(ctx):
     await ctx.send(embed=embed, view=view)
 
 
-bot.run(os.getenv("DISCORD_TOKEN"))
+bot.run(TOKEN)
