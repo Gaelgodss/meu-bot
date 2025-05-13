@@ -1,8 +1,16 @@
 import discord
 from discord.ext import commands
 from discord.ui import Button, View
+import socket
 import os
 
+def bind_dummy_port():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind(('0.0.0.0', 10000))  # Porta arbitrária
+    s.listen(1)
+    print("Porta 10000 aberta (dummy).")
+    s.accept() 
+    
 TOKEN = os.getenv("DISCORD_TOKEN")
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
@@ -874,6 +882,6 @@ async def vip(ctx):
     view.add_item(button)
 
     await ctx.send(embed=embed, view=view)
-
-
+    
+bind_dummy_port()
 bot.run(TOKEN)
