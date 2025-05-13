@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.ui import Button, View
+import os
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 intents = discord.Intents.all()
