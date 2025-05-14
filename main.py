@@ -6,6 +6,7 @@ import os
 import threading
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 import requests
+import time
 
 def start_dummy_http_server():
     port = int(os.environ.get("PORT", 10000))  # Porta do Render ou padrão
