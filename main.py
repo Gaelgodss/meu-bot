@@ -5,6 +5,7 @@ import socket
 import os
 import threading
 from http.server import SimpleHTTPRequestHandler, HTTPServer
+import requests
 
 def start_dummy_http_server():
     port = int(os.environ.get("PORT", 10000))  # Porta do Render ou padrão
@@ -13,9 +14,19 @@ def start_dummy_http_server():
     print(f"Servidor HTTP escutando na porta {port}")
     httpd.serve_forever()
 
+def ping_self():
+    port = int(os.environ.get("PORT", 10000))
+    url = f"http://localhost:{port}"
+    while True:
+        try:
+            response = requests.get(url)
+            print(f"Ping interno: {response.status_code}")
+        except Exception as e:
+            print(f"Erro no ping interno: {e}")
+        time.sleep(25)
 # Inicia o servidor HTTP em uma thread separada
 threading.Thread(target=start_dummy_http_server, daemon=True).start()
-
+threading.Thread(target=ping_self, daemon=True).start()
 # Aqui você pode rodar o resto do seu código normalmente:
 print("Outros processos continuam rodando aqui...")
     
