@@ -3,13 +3,21 @@ from discord.ext import commands
 from discord.ui import Button, View
 import socket
 import os
+import threading
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 
-port = int(os.environ.get("PORT", 10000))  # Porta padrão se PORT não estiver definida
+def start_dummy_http_server():
+    port = int(os.environ.get("PORT", 10000))  # Porta do Render ou padrão
+    server_address = ('0.0.0.0', port)
+    httpd = HTTPServer(server_address, SimpleHTTPRequestHandler)
+    print(f"Servidor HTTP escutando na porta {port}")
+    httpd.serve_forever()
 
-# Servidor HTTP mínimo
-server_address = ('0.0.0.0', port)
-httpd = HTTPServer(server_address, SimpleHTTPRequestHandler)
+# Inicia o servidor HTTP em uma thread separada
+threading.Thread(target=start_dummy_http_server, daemon=True).start()
+
+# Aqui você pode rodar o resto do seu código normalmente:
+print("Outros processos continuam rodando aqui...")
     
 TOKEN = os.getenv("DISCORD_TOKEN")
 intents = discord.Intents.all()
@@ -883,6 +891,4 @@ async def vip(ctx):
 
     await ctx.send(embed=embed, view=view)
     
-print(f"Servidor HTTP escutando na porta {port}")
-httpd.serve_forever()
 bot.run(TOKEN)
